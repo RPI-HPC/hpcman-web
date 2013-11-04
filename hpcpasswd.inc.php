@@ -46,25 +46,23 @@ function generate_password($length=8, $strength=9) {
  *  return false on failure.
  */
 function hpcman_hash($algo, $p) {
-      switch($algo) {
-	case'cleartext':
-	  return $p;
-	  break;
-	case 'crypt':
-	  return base64_encode(crypt($p, $p));
-	  break;
-	case 'md5':
-	  return md5($p);
-	  break;
-	case 'ssha':
-//	  mt_srand((double)microtime()*1000000);
-//	  $salt = pack("CCCC", mt_rand(), mt_rand(), mt_rand(), mt_rand());
-	  $salt = "CCCC";
-	  return base64_encode(pack("H*", sha1($p.$salt)).$salt);
-	  break;
-      }
+  switch($algo) {
+  case'cleartext':
+    return $p;
+    break;
+  case 'crypt':
+    return base64_encode(crypt($p, $p));
+    break;
+  case 'md5':
+    return md5($p);
+    break;
+  case 'ssha':
+    $salt = "CCCC";
+    return base64_encode(pack("H*", sha1($p.$salt)).$salt);
+    break;
+  }
 
-      return false;
+  return false;
 }
 
 /*
