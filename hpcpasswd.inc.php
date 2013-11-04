@@ -40,6 +40,20 @@ function generate_password($length=8, $strength=9) {
     return $password;
 }
 
+/** Generate a salt appropriate for the hash type
+ *
+ * Rule of thumb: salt is at least as long as hash output
+ * SHA256 = 256 bits = 32 bytes
+ */
+
+function gen_salt($algo) {
+  switch($algo) {
+  case 'sha256':
+    return base64_encode(mcrypt_create_iv (192, MCRYPT_DEV_RANDOM));
+  }
+  return false;
+}
+
 /*
  * hpcman_hash(string algorithm, string strToHash)
  *  Hash the given string using the given algorithm and return it,
