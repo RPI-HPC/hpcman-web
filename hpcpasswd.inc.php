@@ -177,11 +177,16 @@ function do_change_password($puuid, &$error, $set_force_reset=false) {
         }
         return false;
       } else if ($acount < 1) {
-        $error = "Error: Not enough rows";
-        if(!pg_query("ROLLBACK")) {
-          $error .= ", rollback failed";
+        hpcman_log("Adding new password hash {$hash['passwordtype']} for $puuid");
+        $sql = "INSERT INTO passwords (password, puuid, passwordtype) VALUES ($1,$2,$3)";
+        $result = pg_query_params($sql, array($passwd, $puuid, $hash['passwordtype']));
+        if (!$result) {
+          $error = "Error: Not enough rows; insert failed";
+          if(!pg_query("ROLLBACK")) {
+            $error .= ", rollback failed";
+          }
+          return false;
         }
-        return false;
       }
     }
 
