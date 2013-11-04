@@ -74,6 +74,12 @@ function hpcman_hash($algo, $p) {
     $salt = "CCCC";
     return base64_encode(pack("H*", sha1($p.$salt)).$salt);
     break;
+  case 'sha256':
+    // per man 3 crypt only 16 characters of salt can be used
+    // this is less than the rule of thumb for larger hash sizes
+    // handle it here in case there is ever an implementation failure in php
+    $crypt_salt = '$5$' . substr(gen_salt($algo), 0, 16) . '$';
+    return base64_encode(crypt($p, $crypt_salt));
   }
 
   return false;
