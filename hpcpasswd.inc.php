@@ -50,6 +50,13 @@ function gen_salt($algo) {
   switch($algo) {
   case 'sha256':
     return base64_encode(mcrypt_create_iv (192, MCRYPT_DEV_RANDOM));
+  // per man 3 crypt the salt is a maximum of 16 characters
+  // and the salt character set is [a–zA–Z0–9./]
+  // this is less than the rule of thumb for larger hash sizes
+  // handle it as a separate case
+  case 'crypt-sha256':
+    $iv = mcrypt_create_iv (96, MCRYPT_DEV_RANDOM);
+    return str_replace('+', '.', base64_encode($iv));
   }
   return false;
 }
@@ -75,10 +82,7 @@ function hpcman_hash($algo, $p) {
     return base64_encode(pack("H*", sha1($p.$salt)).$salt);
     break;
   case 'sha256':
-    // per man 3 crypt only 16 characters of salt can be used
-    // this is less than the rule of thumb for larger hash sizes
-    // handle it here in case there is ever an implementation failure in php
-    $crypt_salt = '$5$' . substr(gen_salt($algo), 0, 16) . '$';
+    $crypt_salt = '$5$' . gen_salt('crypt-sha256') . '$';
     return base64_encode(crypt($p, $crypt_salt));
   }
 
