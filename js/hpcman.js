@@ -2,7 +2,6 @@ $(function() {
   $('.searchkey_principal').keypress(function (e) {
     if(e.which == 13) {
       $('input[name="type"]').val('principal');
-      $('.searchkey_principal').val(ui.item.value);
       $(this).closest("form").submit();
     }
   });
@@ -20,7 +19,6 @@ $(function() {
   $('.searchkey_account').keypress(function (e) {
     if(e.which == 13) {
       $('input[name="type"]').val('username');
-      $('.searchkey_account').val(ui.item.value);
       $(this).closest("form").submit();
     }
   });
