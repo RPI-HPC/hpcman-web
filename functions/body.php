@@ -116,4 +116,24 @@ function print_view_edit_tags()
 
   echo "</form>";
 }
+
+function print_add_edit_tag($tag)
+{
+  if ($tag) {
+    echo "<p><b>Note: This will action will affect all site and project currently utilizing this tag.</b></p>";
+    echo "Edit tag '$tag':";
+    $description = db_get_tag_description($tag);
+  } else {
+    echo "Add tag:";
+    $description = '';
+  }
+
+
+  echo "<form method='post' action='?action=do_add_edit_tag'>";
+  if ($tag) {
+    echo "<input type='hidden' name='original_tag' value='$tag'/>";
+  }
+  echo "<table><tr><td>Tag</td><td><input name='tag' type='text' value='$tag' /></td></tr><tr><td>Description</td><td><textarea name='description'>$description</textarea></td></tr></table><input type='submit' value='Add/Edit Tag' /></form>";
+}
+
 ?>
