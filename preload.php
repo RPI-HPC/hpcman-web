@@ -166,5 +166,15 @@ switch($action) {
     } else {
       $_SESSION['error'] = "Tag add/update failed.";
     }
+    break;
+
+  case 'do_remove_tag':
+    $preload_success = do_remove_tag(get_request_field('tag'));
+    if ($preload_success) {
+      $action = 'print_view_edit_tags';
+      $_SESSION['error'] = "Tag removed successfully.";
+    } else {
+      $_SESSION['error'] = "Unable to remove tag.";
+    }
 }
 ?>
