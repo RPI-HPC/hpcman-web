@@ -156,6 +156,22 @@ function db_get_tag_description($tag)
 }
 
 /*
+ * db_get_projects_by_tag(int snuuid, string tag)
+ * Return a list of projects and descriptions for a given tag.
+ */
+function db_get_projects_by_tag($snuuid, $tag)
+{
+  $sql = "SELECT projname, projshortdesc, projects.projid
+          FROM project_tagging, projects
+          WHERE project_tagging.snuuid = projects.snuuid
+          AND project_tagging.projid = projects.projid
+          AND tag=$1 AND projects.snuuid=$2
+          ORDER BY projname";
+  $result = pg_query_params($sql, array($tag, $snuuid));
+  return $result;
+}
+
+/*
  * db_replace_project_tags(int snuuid, int projid, array tags)
  * Returns true if tags are fully replaced. False if nothing was changed.
  */
