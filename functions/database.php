@@ -121,6 +121,30 @@ function db_get_tags_project($snuuid, $projid)
 }
 
 /*
+ * db_get_tags([int snuuid])
+ * Returns a list with names, descriptions, and project counts for all tags.
+ * If snuuid is given, the tags returned will only be ones in use in the site.
+ * The count for a call without a site will include all sites.
+ */
+function db_get_tags($snuuid=NULL)
+{
+  $sql = "SELECT project_tags.tag, description, COUNT(project_tagging.tag)
+          FROM project_tags
+          LEFT JOIN project_tagging ON project_tagging.tag=project_tags.tag ";
+  if ($snuuid) {
+    $sql .= "WHERE project_tagging.snuuid=$1 ";
+  }
+  $sql .= "GROUP BY project_tags.tag, description, project_tagging.tag
+           ORDER BY project_tags.tag";
+  if ($snuuid) {
+    $result = pg_query_params($sql, array($snuuid));
+  } else {
+    $result = pg_query($sql);
+  }
+  return $result;
+}
+
+/*
  * db_replace_project_tags(int snuuid, int projid, array tags)
  * Returns true if tags are fully replaced. False if nothing was changed.
  */
