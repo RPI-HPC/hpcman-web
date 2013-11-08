@@ -8,6 +8,25 @@
 	echo print_choose_site();
 
 ?>
+    <b>Project Tags</b>
+    <a href="?action=print_add_edit_tag">Add Tag</a>
+    <a href="?action=print_view_edit_tags">View/Edit Tags</a>
+    <b>Project Tags in Site</b>
+    <div id="tag-menu">
+      <?php
+        $result = db_get_tags($_SESSION['snuuid']);
+        $count = pg_num_rows($result);
+        if ($count == 0) {
+          echo "(No tags defined.)";
+        }
+
+        echo "<a href='?action=print_projects_by_tag'>(untagged)</a>";
+
+        while($tag = pg_fetch_assoc($result)) {
+          echo "<a href='?action=print_projects_by_tag&amp;tag={$tag['tag']}' title='{$tag['description']}'>{$tag['tag']} ({$tag['count']})</a>";
+        }
+      ?>
+    </div>
     <b>HPCman</b>
     <a href='?action=logout'>Clear Session</a>
     <a href='?action=manage_sites'>Manage Sites</a>
