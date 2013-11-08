@@ -173,6 +173,11 @@ switch($action) {
     }
     break;
 
+  case 'print_projects_by_tag':
+    $tag = get_request_field('tag');
+    print_projects_by_tag($_SESSION['snuuid'], $tag);
+    break;
+
   case '':
     echo 'No action selected. Please use the menu to begin an action.';
     break;
