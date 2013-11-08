@@ -97,4 +97,23 @@ function print_projects_by_tag($snuuid, $tag=NULL)
   echo '</table>';
 }
 
+function print_view_edit_tags()
+{
+  echo "<p><b>Note: Usage counts are across all sites, not the currently selected site.</b></p>";
+  echo "<p><b>Note: Removing a tag will remove it from all projects in all sites.</b></p>";
+  echo "<form>";
+  $result = db_get_tags();
+  $count = pg_num_rows($result);
+  if ($count == 0) {
+    echo "No tags exist.";
+  }
+
+  echo '<table><tr><th>Tag</th><th>Description</th><th>Use</th><th>Edit</th><th>Remove</th></tr>';
+  while($tag = pg_fetch_assoc($result)) {
+    echo "<tr><td>{$tag['tag']}</td><td>{$tag['description']}</td><td>{$tag['count']}</td><td><a href='?action=print_add_edit_tag&amp;tag={$tag['tag']}'>Edit</a></td><td><a href='?action=do_remove_tag&amp;tag={$tag['tag']}'>Remove</a></td></tr>";
+  }
+  echo '</table>';
+
+  echo "</form>";
+}
 ?>
