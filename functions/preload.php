@@ -531,4 +531,14 @@ function do_add_edit_tag($tag, $description, $original=null) {
   }
 }
 
+/*
+ * do_remove_tag(string tag)
+ * Remove the given tag from the database
+ */
+
+function do_remove_tag($tag) {
+  $sql = "DELETE FROM project_tags where tag=$1";
+  return pg_query_params($sql, array($tag)) !== false;
+}
+
 ?>
