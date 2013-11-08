@@ -145,6 +145,17 @@ function db_get_tags($snuuid=NULL)
 }
 
 /*
+ * db_get_tag_description(string tag)
+ * Returns the tag description/
+ */
+function db_get_tag_description($tag)
+{
+  $sql = "SELECT description FROM project_tags where tag=$1";
+  $res = pg_query_params($sql, array($tag));
+  return pg_fetch_result($res, 'description');
+}
+
+/*
  * db_replace_project_tags(int snuuid, int projid, array tags)
  * Returns true if tags are fully replaced. False if nothing was changed.
  */
