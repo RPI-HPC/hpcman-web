@@ -517,4 +517,18 @@ function do_vs_group_membership($snuuid, $vsid) {
   }
 }
 
+/*
+ * do_add_edit_tag(string tag, string description, [string original])
+ * Add a new tag or, if original is given, update/rename the tag.
+ */
+function do_add_edit_tag($tag, $description, $original=null) {
+  if ($original) {
+    $sql = "UPDATE project_tags SET tag=$1, description=$2 WHERE tag=$3";
+    return pg_query_params($sql, array($tag, $description, $original)) !== false;
+  } else {
+    $sql = "INSERT INTO project_tags (tag, description) VALUES ($1,$2)";
+    return pg_query_params($sql, array($tag, $description)) !== false;
+  }
+}
+
 ?>
