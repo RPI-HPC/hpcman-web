@@ -70,4 +70,31 @@ function print_select_project($snuuid, $target, $argument = NULL, $all = true) {
   return $ret;
 }
 
+/*
+ * print_project_by_tag(int snuuid, [string tag])
+ * Print all projects with the given tag.
+ * If not tag is given print untagged projects.
+ */
+function print_projects_by_tag($snuuid, $tag=NULL)
+{
+  if (!$tag) {
+    echo "Untagged projects in site '{$_SESSION['sitename']}':";
+    $result = db_get_untagged_projects($snuuid);
+  } else {
+    echo "Projects tagged '$tag' in site '{$_SESSION['sitename']}':";
+    $result = db_get_projects_by_tag($snuuid, $tag);
+  }
+  $count = pg_num_rows($result);
+  if ($count == 0) {
+    echo "No projects tagged '$tag' in this site.";
+    return;
+  }
+
+  echo '<table><tr><th>Project</th><th>Description</th></tr>';
+  while($project = pg_fetch_assoc($result)) {
+    echo "<tr><td><a href='?action=print_edit_project&amp;projid={$project['projid']}' title='{$project['projshortdesc']}'>{$project['projname']}</a></td><td>{$project['projshortdesc']}</td></tr>";
+  }
+  echo '</table>';
+}
+
 ?>
