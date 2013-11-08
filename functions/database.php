@@ -172,6 +172,19 @@ function db_get_projects_by_tag($snuuid, $tag)
 }
 
 /*
+ * db_get_untagged_projects(int snuuid)
+ * Return a list of untagged projects.
+ */
+function db_get_untagged_projects($snuuid)
+{
+  $sql = "select projname, projshortdesc, projid
+          from projects where projid not in
+          (select projid from project_tagging where snuuid=$1)";
+  $result = pg_query_params($sql, array($snuuid));
+  return $result;
+}
+
+/*
  * db_replace_project_tags(int snuuid, int projid, array tags)
  * Returns true if tags are fully replaced. False if nothing was changed.
  */
