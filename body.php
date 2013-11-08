@@ -182,6 +182,11 @@ switch($action) {
     print_view_edit_tags();
     break;
 
+  case 'print_add_edit_tag':
+    $tag = get_request_field('tag');
+    print_add_edit_tag($tag);
+    break;
+
   case '':
     echo 'No action selected. Please use the menu to begin an action.';
     break;
