@@ -154,5 +154,17 @@ switch($action) {
                                          get_request_field('dbuser'),
                                          get_request_field('vsname'),
                                          get_request_field('description'));
+    break;
+
+  case 'do_add_edit_tag':
+    $preload_success = do_add_edit_tag(get_request_field('tag'),
+                                       get_request_field('description'),
+                                       get_request_field('original_tag'));
+    if ($preload_success) {
+      $_SESSION['error'] = "Tag added/updated successfully.";
+      $action = 'print_view_edit_tags';
+    } else {
+      $_SESSION['error'] = "Tag add/update failed.";
+    }
 }
 ?>
