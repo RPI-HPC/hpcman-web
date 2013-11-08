@@ -178,6 +178,10 @@ switch($action) {
     print_projects_by_tag($_SESSION['snuuid'], $tag);
     break;
 
+  case 'print_view_edit_tags':
+    print_view_edit_tags();
+    break;
+
   case '':
     echo 'No action selected. Please use the menu to begin an action.';
     break;
