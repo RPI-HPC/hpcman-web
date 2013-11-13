@@ -260,7 +260,9 @@ function db_add_user_account($snuuid, $username, $puuid, $groupname, $homedirect
 
 function db_get_project_cluster_access($snuuid, $projid)
 {
-  $sql = "SELECT cluster, parentnode, share from project_cluster_access where snuuid=$1 AND projid=$2";
+  $sql = "SELECT cluster, parentnode, share,
+          project_share_of_root(snuuid, projid, cluster) as root_share
+          from project_cluster_access where snuuid=$1 AND projid=$2";
   $res = pg_query_params($sql, array($snuuid, $projid));
   return $res;
 }
