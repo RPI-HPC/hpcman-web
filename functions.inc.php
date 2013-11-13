@@ -1192,7 +1192,7 @@ function print_project_cluster_access($snuuid, $projid) {
     return "(none)";
   }
 
-  $ret = "<div><span>Access to <span class='count'>$count</span> clusters:</span><table><thead><tr><th>Cluster</th><th>Parent</th><th>Share</th></thead><tbody>";
+  $ret = "<div><span>Access to <span class='count'>$count</span> clusters:</span><table><thead><tr><th>Cluster</th><th>Parent</th><th>Share</th><th>Root Share</th></thead><tbody>";
   while($cluster = pg_fetch_assoc($result)) {
     $parent = $cluster['parentnode'];
     if ($parent == '') {
@@ -1202,7 +1202,13 @@ function print_project_cluster_access($snuuid, $projid) {
     if ($share == '') {
       $share = '*';
     }
-    $ret .= "<tr><td>{$cluster['cluster']}</td><td>$parent</td><td>$share</td></tr>";
+    $root_share = $cluster['root_share'];
+    if ($root_share == '') {
+      $root_share = 'n/a';
+    } else {
+      $root_share = round(100 * $root_share, 2) . '&nbsp;%';
+    }
+    $ret .= "<tr><td>{$cluster['cluster']}</td><td>$parent</td><td>$share</td><td>$root_share</td></tr>";
   }
   $ret .= "</tbody></table></div>";
 
