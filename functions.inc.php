@@ -1239,7 +1239,7 @@ function print_simple_principal_multiselect($snuuid, $projid, $title, $table, $n
   $r = pg_query_params($s, array($snuuid, $projid));
 
   while($o = pg_fetch_assoc($r)) {
-    $ret .= "     <tr><td>{$o['name']}</td>
+    $ret .= "     <tr><td><a href='?action=edit_principal&puuid={$o['puuid']}'>{$o['name']}</a></td>
        <td><input type='checkbox' name='remove-{$name}-{$o['puuid']}'></td></tr>
 ";
   }
